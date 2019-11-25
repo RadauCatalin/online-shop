@@ -10,21 +10,21 @@ public class Product {
 
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     private String description;
     @NotNull
     private String name;
     @NotNull
-    private double price;
+    private Double price;
     @NotNull
-    private int quantity;
+    private Integer quantity;
     private String imageUrl;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -44,19 +44,19 @@ public class Product {
         this.name = name;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
