@@ -5,14 +5,20 @@ import org.fasttrackit.onlineshop.domain.Product;
 import org.fasttrackit.onlineshop.exception.ResourceNotFoundException;
 import org.fasttrackit.onlineshop.persistance.ProductRepository;
 import org.fasttrackit.onlineshop.transfer.GetProductsRequest;
+import org.fasttrackit.onlineshop.transfer.ProductRespone;
 import org.fasttrackit.onlineshop.transfer.SaveProductRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ProductService {
@@ -54,16 +60,34 @@ public class ProductService {
                 .orElseThrow(() -> new ResourceNotFoundException("Product " + id + " does not exist."));
     }
 
-    public Page<Product> getProducts(GetProductsRequest request, Pageable pageable) {
+    @Transactional
+    public Page<ProductRespone> getProducts(GetProductsRequest request, Pageable pageable) {
         LOGGER.info("Retrieving products: {}", request);
+        Page<Product> products;
+
         if (request != null && request.getPartialName() != null && request.getMinQuantity() != null) {
-            return productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
+            products = productRepository.findByNameContainingAndQuantityGreaterThanEqual(request.getPartialName(),
                     request.getMinQuantity(), pageable);
         } else if (request != null && request.getPartialName() != null) {
-            return productRepository.findByNameContaining(request.getPartialName(), pageable);
+            products = productRepository.findByNameContaining(request.getPartialName(), pageable);
         } else {
-            return productRepository.findAll(pageable);
+            products = productRepository.findAll(pageable);
         }
+
+        List<ProductRespone> productRespones = new ArrayList<>();
+
+        for (Product product : products.getContent()) {
+            ProductRespone productRespone = new ProductRespone();
+            productRespone.setId(product.getId());
+            productRespone.setName(product.getName());
+            productRespone.setDescription(product.getDescription());
+            productRespone.setPrice(product.getPrice());
+            productRespone.setQuantity(product.getQuantity());
+            productRespone.setImageUrl(product.getImageUrl());
+
+            productRespones.add(productRespone);
+        }
+        return new PageImpl<>(productRespones, pageable, products.getTotalElements());
     }
 
     public Product updateProduct(long id, SaveProductRequest request) {
