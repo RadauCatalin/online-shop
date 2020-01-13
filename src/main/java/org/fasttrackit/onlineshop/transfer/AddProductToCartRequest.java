@@ -6,7 +6,7 @@ public class AddProductToCartRequest {
     @NotNull
     private Long productId;
     @NotNull
-    private Long costumerId;
+    private Long customerId;
 
     public Long getProductId() {
         return productId;
@@ -16,19 +16,19 @@ public class AddProductToCartRequest {
         this.productId = productId;
     }
 
-    public Long getCostumerId() {
-        return costumerId;
+    public Long getCustomerId() {
+        return customerId;
     }
 
-    public void setCostumerId(Long costumerId) {
-        this.costumerId = costumerId;
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     @Override
     public String toString() {
         return "AddProductToCartRequest{" +
                 "productId=" + productId +
-                ", costumerId=" + costumerId +
+                ", customerId=" + customerId +
                 '}';
     }
 }

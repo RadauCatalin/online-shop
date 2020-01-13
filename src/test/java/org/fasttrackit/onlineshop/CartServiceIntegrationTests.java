@@ -39,7 +39,7 @@ public class CartServiceIntegrationTests {
         Product product = productSteps.createProduct();
 
         AddProductToCartRequest request = new AddProductToCartRequest();
-        request.setCostumerId(customer.getId());
+        request.setCustomerId(customer.getId());
         request.setProductId(product.getId());
 
         cartService.addProductToCart(request);

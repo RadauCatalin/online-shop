@@ -39,11 +39,11 @@ public class CartService {
 
         LOGGER.info("Adding product to cart : {}", request);
 
-        Cart cart = cartRepository.findById(request.getCostumerId()).orElse(new Cart());
+        Cart cart = cartRepository.findById(request.getCustomerId()).orElse(new Cart());
         if (cart.getCustomer() == null) {
             LOGGER.info("New cart will be created. Retrieving customer {} to map the relationship"
-                    , request.getCostumerId());
-            Customer customer = customerService.getCustomer(request.getCostumerId());
+                    , request.getCustomerId());
+            Customer customer = customerService.getCustomer(request.getCustomerId());
             cart.setId(customer.getId());
             cart.setCustomer(customer);
         }
